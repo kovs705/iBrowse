@@ -6,16 +6,26 @@
 //
 
 import SwiftUI
+import Combine
+import WebKit
+import UIKit
 
 struct ContentView: View {
+    @ObservedObject var viewModel = ViewModel()
+    @State var isLoaderVisible = false
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        ZStack {
+            VStack(spacing: 0) {
+                WebNavigationView(viewModel: viewModel)
+                WebView(type: .public, url: "https://google.com", viewModel: viewModel)
+                
+            }.onReceive(self.viewModel.isLoaderVisible.receive(on: RunLoop.main)) { value in
+                self.isLoaderVisible = value
+            }
+            if isLoaderVisible {
+                LoaderView()
+            }
         }
-        .padding()
     }
 }
 
@@ -24,3 +34,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
