@@ -53,6 +53,8 @@ struct WebView: UIViewRepresentable {
         Coordinator(self)
     }
     
+    
+    // MARK: - Coordinator
     class Coordinator: NSObject, WKNavigationDelegate {
         var parent: WebView
         var webViewNavigationSubscriber: AnyCancellable? = nil
@@ -66,6 +68,8 @@ struct WebView: UIViewRepresentable {
             webViewNavigationSubscriber?.cancel()
         }
         
+        
+        // MARK: - Did finish navigation
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             print("didFinish")
             self.parent.viewModel.isLoaderVisible.send(false)
@@ -103,6 +107,7 @@ struct WebView: UIViewRepresentable {
         }
         
         
+        // MARK: - did Start Provisional
         func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
             print("didStartProvisionalNavigation")
             self.parent.viewModel.isLoaderVisible.send(true)
@@ -122,6 +127,8 @@ struct WebView: UIViewRepresentable {
             })
         }
         
+        
+        // MARK: - did Fail Provisional
         func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
             print("didFailProvisionalNavigation")
             self.parent.viewModel.isLoaderVisible.send(false)
@@ -137,6 +144,8 @@ struct WebView: UIViewRepresentable {
             self.parent.viewModel.isLoaderVisible.send(false)
         }
         
+        
+        // MARK: - Policy and server
         func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
             print("decidePolicyFor")
             decisionHandler(.allow, preferences)

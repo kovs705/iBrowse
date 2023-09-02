@@ -11,6 +11,7 @@ import Combine
 import WebKit
 import UIKit
 
+ // MARK: - Web navigation delegate
 class WebViewNavigationDelegate: NSObject, WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         // TODO
@@ -23,6 +24,8 @@ class WebViewNavigationDelegate: NSObject, WKNavigationDelegate {
     }
 }
 
+
+// MARK: - ViewModel
 @MainActor
 class WebViewModel: ObservableObject {
     let webView: WKWebView
